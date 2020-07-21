@@ -5,18 +5,18 @@ class ChatTextField extends StatelessWidget {
   final String placeHolderText;
   final Color backgroundColor;
   final Color deeperColor;
-  static double get height => 75;
+  static final double height = 75;
 
   const ChatTextField(
       {Key key, this.placeHolderText, this.backgroundColor, this.deeperColor});
 
   @override
   Widget build(BuildContext context) {
-    Color deepColor = (this.deeperColor == null) ? Colors.black : this.deeperColor;
+    Color deepColor = this.deeperColor ?? Colors.black;
     return Container(
       height: height,
       decoration: BoxDecoration(
-        color: backgroundColor == null ? Colors.grey : backgroundColor,
+        color: backgroundColor ?? Colors.grey,
       ),
       child: Row(
         children: <Widget>[
@@ -29,8 +29,8 @@ class ChatTextField extends StatelessWidget {
                     cursorColor: deepColor,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: deepColor, width: 0.5)),
+                            borderSide:
+                                BorderSide(color: deepColor, width: 0.5)),
                         border: OutlineInputBorder(),
                         hintText: this.placeHolderText),
                   ))),
@@ -43,15 +43,5 @@ class ChatTextField extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  static Size displaySize(BuildContext context) {
-    debugPrint('Size = ' + MediaQuery.of(context).size.toString());
-    return MediaQuery.of(context).size;
-  }
-
-  static double displayHeight(BuildContext context) {
-    debugPrint('Height = ' + displaySize(context).height.toString());
-    return displaySize(context).height;
   }
 }
