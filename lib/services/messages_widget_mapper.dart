@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tock_flutter_kit/components/bubble.dart';
+import 'package:tock_flutter_kit/components/postback_button.dart';
+import 'package:tock_flutter_kit/components/qr_button.dart';
+import 'package:tock_flutter_kit/components/url_button.dart';
 
 enum MessagesTypes { CARD, CAROUSEL, WIDGET, MESSAGE }
 enum ButtonsTypes { QUICK_REPLY, POSTBACK_BUTTON, URL_BUTTON, WIDGET }
@@ -47,7 +51,7 @@ class MessagesWidgetMapper {
       case MessagesTypes.CAROUSEL:
         return Container();
       case MessagesTypes.MESSAGE:
-        return Container();
+        return Bubble(text: messageData['text']);
       case MessagesTypes.WIDGET:
         return customWidget(messageData);
       default:
@@ -61,11 +65,18 @@ class ButtonsWidgetMapper {
       [Function(Map<String, dynamic> messageData) customButton]) {
     switch (type) {
       case ButtonsTypes.QUICK_REPLY:
-        return Container();
+        return QrButton(
+          text: messageData['text'],
+        );
       case ButtonsTypes.POSTBACK_BUTTON:
-        return Container();
+        return PostbackButton(
+          text: messageData['text'],
+        );
       case ButtonsTypes.URL_BUTTON:
-        return Container();
+        return UrlButton(
+          text: messageData['text'],
+          url: messageData['url'],
+        );
       case ButtonsTypes.WIDGET:
         return customButton(messageData);
       default:

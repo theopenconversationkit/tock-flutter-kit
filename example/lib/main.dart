@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tock_flutter_kit/components/qr_button.dart';
 import 'package:tock_flutter_kit/tock_flutter_kit.dart';
 
 void main() {
@@ -47,17 +48,40 @@ class _TockChatState extends State<TockChat> {
             Container(
               height: MediaQuery.of(context).size.height - ChatTextField.height,
               color: Colors.deepOrange,
-              child: ListView.builder(
-                itemBuilder: (_, index) => Bubble(
-                  text: "coucou $index",
-                  index: index,
-                  backgroundBubbleColor: Colors.orangeAccent,
-                  borderBubbleColor: Colors.deepOrangeAccent,
-                  textBubbleColor: Colors.white,
-                ),
-                itemCount: 10,
-                scrollDirection: Axis.vertical,
-                cacheExtent: 10,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) => Bubble(
+                        text: "coucou $index",
+                        index: index,
+                        backgroundBubbleColor: Colors.orangeAccent,
+                        borderBubbleColor: Colors.deepOrangeAccent,
+                        textBubbleColor: Colors.white,
+                      ),
+                      itemCount: 10,
+                      scrollDirection: Axis.vertical,
+                      cacheExtent: 10,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: ListView.builder(
+                      padding: EdgeInsets.all(5),
+                      itemBuilder: (_, index) => Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: QrButton(
+                          text: 'Click me',
+                          onPressed: () {},
+                        ),
+                      ),
+                      itemCount: 4,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                  ),
+                ],
               ),
             ),
             Positioned(

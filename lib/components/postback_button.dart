@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class QrButton extends StatelessWidget {
+class PostbackButton extends StatelessWidget {
   final String text;
   final Function onPressed;
 
-  QrButton({
+  PostbackButton({
     Key key,
     @required this.text,
     this.onPressed,
