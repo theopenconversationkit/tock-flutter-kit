@@ -78,7 +78,9 @@ class MessagesWidgetMapper {
       [Function(Message message) customWidget]) {
     switch (message.type) {
       case MessagesTypes.CARD:
-        return CardWidget();
+        return CardWidget(
+          title: message.data[MessagesTypes.CARD.toText]['title'],
+        );
       case MessagesTypes.CAROUSEL:
         return CarouselWidget();
       case MessagesTypes.TEXT:

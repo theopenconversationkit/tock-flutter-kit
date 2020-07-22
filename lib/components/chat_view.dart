@@ -46,20 +46,22 @@ class ChatView extends StatelessWidget {
                       cacheExtent: 10,
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: ListView.builder(
-                      padding: EdgeInsets.all(5),
-                      itemBuilder: (_, index) => Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        child: ButtonsWidgetMapper.mapButton(
-                            buttons.elementAt(index), inputText),
-                      ),
-                      itemCount: buttons.length,
-                      scrollDirection: Axis.horizontal,
-                    ),
-                  ),
+                  buttons.length > 0
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          child: ListView.builder(
+                            padding: EdgeInsets.all(5),
+                            itemBuilder: (_, index) => Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: ButtonsWidgetMapper.mapButton(
+                                  buttons.elementAt(index), inputText),
+                            ),
+                            itemCount: buttons.length,
+                            scrollDirection: Axis.horizontal,
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),
