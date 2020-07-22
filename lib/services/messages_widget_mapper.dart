@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tock_flutter_kit/components/bubble.dart';
+import 'package:tock_flutter_kit/components/bubble_widget.dart';
 import 'package:tock_flutter_kit/components/postback_button.dart';
 import 'package:tock_flutter_kit/components/qr_button.dart';
 import 'package:tock_flutter_kit/components/url_button.dart';

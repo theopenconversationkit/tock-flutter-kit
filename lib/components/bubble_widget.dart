@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tock_flutter_kit/tock_chat.dart';
 
-class Bubble extends StatelessWidget {
+class BubbleWidget extends StatelessWidget {
   final String text;
   final UserTypes name;
   final Color backgroundBubbleColor;
   final Color borderBubbleColor;
   final Color textBubbleColor;
 
-  const Bubble(
+  const BubbleWidget(
       {Key key,
       @required this.text,
       @required this.name,
