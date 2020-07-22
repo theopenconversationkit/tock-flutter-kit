@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:tock_flutter_kit/services/authenticator_tock.dart';
@@ -19,11 +20,13 @@ class MessageService {
         {'query': query, 'userId': this.userId, 'locale': this.language});
     developer.log(body);
 
-    var responses = await authenticatorTOCK.post(
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: body);
+    var responses = await authenticatorTOCK.post(headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.contentEncodingHeader: 'charset=utf-8'
+    }, body: body);
 
-    return TOCKResponse(responses: json.decode(responses.body));
+    return TOCKResponse(
+        responses: json.decode(utf8.decode(responses.bodyBytes)));
   }
 }
 
