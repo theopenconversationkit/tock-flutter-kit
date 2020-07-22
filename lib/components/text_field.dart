@@ -6,9 +6,15 @@ class ChatTextField extends StatelessWidget {
   final Color backgroundColor;
   final Color deeperColor;
   static final double height = 75;
+  final Function(String) onPressed;
+  static final TextEditingController controller = TextEditingController();
 
   const ChatTextField(
-      {Key key, this.placeHolderText, this.backgroundColor, this.deeperColor});
+      {Key key,
+      this.placeHolderText,
+      this.backgroundColor,
+      this.deeperColor,
+      @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +33,7 @@ class ChatTextField extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: TextFormField(
                     cursorColor: deepColor,
+                    controller: controller,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderSide:
@@ -38,7 +45,9 @@ class ChatTextField extends StatelessWidget {
             color: deepColor,
             iconSize: 45,
             icon: Icon(Icons.send),
-            onPressed: () {},
+            onPressed: () {
+              onPressed(controller.text);
+            },
           )
         ],
       ),
