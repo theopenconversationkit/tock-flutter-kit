@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tock_flutter_kit/tock_chat.dart';
 
 class Bubble extends StatelessWidget {
   final String text;
-  final String name;
-  final String type;
-  final int index;
+  final UserTypes name;
   final Color backgroundBubbleColor;
   final Color borderBubbleColor;
   final Color textBubbleColor;
 
-  const Bubble({Key key,
-    @required this.text,
-    @required this.name,
-    this.type,
-    @required this.index,
-    this.backgroundBubbleColor,
-    this.borderBubbleColor,
-    this.textBubbleColor})
+  const Bubble(
+      {Key key,
+      @required this.text,
+      @required this.name,
+      this.backgroundBubbleColor,
+      this.borderBubbleColor,
+      this.textBubbleColor})
       : super(key: key);
 
   @override
@@ -25,17 +23,16 @@ class Bubble extends StatelessWidget {
     Color textColor = textBubbleColor == null ? Colors.white : textBubbleColor;
     return Container(
         width: 20,
-        child: Text(text,
-          style: Theme
-              .of(context)
-              .textTheme
-              .headline4
-              .copyWith(color: textColor),
-          textAlign: isUserMessage(index) ? TextAlign.right : TextAlign.left,),
+        child: Text(
+          text,
+          style:
+              Theme.of(context).textTheme.headline4.copyWith(color: textColor),
+          textAlign: isUserMessage(name) ? TextAlign.right : TextAlign.left,
+        ),
         height: 60,
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
         margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-        decoration: isUserMessage(index)
+        decoration: isUserMessage(name)
             ? getUserMessageDecoration()
             : getBotMessageDecoration());
   }
@@ -46,7 +43,7 @@ class Bubble extends StatelessWidget {
       border: Border.all(
           color: borderBubbleColor == null ? Colors.black : borderBubbleColor),
       color:
-      backgroundBubbleColor == null ? Colors.grey : backgroundBubbleColor,
+          backgroundBubbleColor == null ? Colors.grey : backgroundBubbleColor,
     );
   }
 
@@ -56,7 +53,7 @@ class Bubble extends StatelessWidget {
         color: Colors.transparent);
   }
 
-  bool isUserMessage(int index) {
-    return (index % 2 != 0);
+  bool isUserMessage(UserTypes type) {
+    return type == UserTypes.BOT;
   }
 }

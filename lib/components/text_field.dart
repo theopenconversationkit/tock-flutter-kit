@@ -6,7 +6,7 @@ class ChatTextField extends StatelessWidget {
   final Color backgroundColor;
   final Color deeperColor;
   static final double height = 75;
-  final VoidCallback onPressed;
+  final Function(String) onPressed;
   static final TextEditingController controller = TextEditingController();
 
   const ChatTextField(
@@ -45,7 +45,9 @@ class ChatTextField extends StatelessWidget {
             color: deepColor,
             iconSize: 45,
             icon: Icon(Icons.send),
-            onPressed: onPressed,
+            onPressed: () {
+              onPressed(controller.text);
+            },
           )
         ],
       ),

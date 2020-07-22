@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:tock_flutter_kit/services/authenticator_tock.dart';
-import 'dart:developer' as developer;
 
 class MessageService {
   final AuthenticatorTOCK authenticatorTOCK;
@@ -9,7 +10,9 @@ class MessageService {
   final String userId;
 
   const MessageService(
-      {@required this.authenticatorTOCK, this.language = "fr", this.userId = "test_flutter_app"});
+      {@required this.authenticatorTOCK,
+      this.language = "fr",
+      this.userId = "test_flutter_app"});
 
   Future<TOCKResponse> sendHTTPMessage(String query) async {
     String body = json.encode(
@@ -29,8 +32,8 @@ class TOCKResponse {
 
   TOCKResponse({@required this.responses});
 
-  String getMessage() {
-    return this.responses.value;
+  List<dynamic> getMessage() {
+    return this.responses['responses'];
   }
 
   String getType() {

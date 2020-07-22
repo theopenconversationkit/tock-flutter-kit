@@ -3,8 +3,9 @@ import 'package:tock_flutter_kit/components/bubble.dart';
 import 'package:tock_flutter_kit/components/postback_button.dart';
 import 'package:tock_flutter_kit/components/qr_button.dart';
 import 'package:tock_flutter_kit/components/url_button.dart';
+import 'package:tock_flutter_kit/tock_chat.dart';
 
-enum MessagesTypes { CARD, CAROUSEL, WIDGET, MESSAGE }
+enum MessagesTypes { CARD, CAROUSEL, WIDGET, TEXT }
 enum ButtonsTypes { QUICK_REPLY, POSTBACK_BUTTON, URL_BUTTON, WIDGET }
 
 class ButtonsUtil {
@@ -24,36 +25,53 @@ class ButtonsUtil {
   }
 }
 
-class MessagesTypesUtil {
-  static MessagesTypes fromString(String type) {
-    switch (type) {
-      case 'card':
-        return MessagesTypes.CARD;
-      case 'carousel':
-        return MessagesTypes.CAROUSEL;
-      case 'widget':
-        return MessagesTypes.WIDGET;
-      case 'message':
-        return MessagesTypes.MESSAGE;
+extension MessagesTypesExtension on MessagesTypes {
+  String get toText {
+    switch (this) {
+      case MessagesTypes.WIDGET:
+        return 'widget';
+      case MessagesTypes.CAROUSEL:
+        return 'carousel';
+      case MessagesTypes.CARD:
+        return 'card';
+      case MessagesTypes.TEXT:
+        return 'text';
       default:
         return null;
     }
   }
 }
 
+class MessagesTypesUtil {
+  static MessagesTypes fromString(Map<String, dynamic> type) {
+    if (type[MessagesTypes.CARD.toText] != null) {
+      return MessagesTypes.CARD;
+    } else if (type[MessagesTypes.CAROUSEL.toText] != null) {
+      return MessagesTypes.CAROUSEL;
+    } else if (type[MessagesTypes.WIDGET.toText] != null) {
+      return MessagesTypes.WIDGET;
+    } else {
+      return MessagesTypes.TEXT;
+    }
+  }
+}
+
 // TODO handle buttons in body with global config
 class MessagesWidgetMapper {
-  static Widget mapMessage(MessagesTypes type, Map<String, dynamic> messageData,
+  static Widget mapMessage(Message message,
       [Function(Map<String, dynamic> messageData) customWidget]) {
-    switch (type) {
+    switch (message.type) {
       case MessagesTypes.CARD:
         return Container();
       case MessagesTypes.CAROUSEL:
         return Container();
-      case MessagesTypes.MESSAGE:
-        return Bubble(text: messageData['text']);
+      case MessagesTypes.TEXT:
+        return Bubble(
+          text: message.data[MessagesTypes.TEXT.toText],
+          name: message.name,
+        );
       case MessagesTypes.WIDGET:
-        return customWidget(messageData);
+        return customWidget(message.data);
       default:
         return null;
     }
