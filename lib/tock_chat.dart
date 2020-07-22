@@ -16,7 +16,7 @@ class TockChat extends StatefulWidget {
 class _TockChatState extends State<TockChat> {
   // TODO singleton
   static AuthenticatorTOCK authenticatorTOCK = AuthenticatorTOCK(
-      url: 'https://botinoui-production1-bot.sncfvoyages-prod.aws.vsct.fr/web');
+      url: 'https://demo-bot.tock.ai/io/kchiron/web_katoche/web');
   MessageService messageService =
       MessageService(authenticatorTOCK: authenticatorTOCK);
 
