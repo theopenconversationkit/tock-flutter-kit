@@ -33,6 +33,8 @@ class TockChat extends StatefulWidget {
 }
 
 class _TockChatState extends State<TockChat> {
+  final List<Bubble> _messages = <Bubble>[];
+
   @override
   void initState() {
     super.initState();
@@ -60,7 +62,7 @@ class _TockChatState extends State<TockChat> {
                         borderBubbleColor: Colors.deepOrangeAccent,
                         textBubbleColor: Colors.white,
                       ),
-                      itemCount: 10,
+                      itemCount: 2,
                       scrollDirection: Axis.vertical,
                       cacheExtent: 10,
                     ),
@@ -92,11 +94,39 @@ class _TockChatState extends State<TockChat> {
                 backgroundColor: Colors.orangeAccent,
                 deeperColor: Colors.deepOrangeAccent,
                 placeHolderText: "Ecrivez votre message",
+                onPressed: () =>
+                    _handleSubmitted(ChatTextField.controller.text),
               ),
             )
           ],
         ),
       ),
     );
+  }
+
+  void Response(query) async {
+    AuthenticatorTOCK authenticatorTOCK = AuthenticatorTOCK(
+        url:
+            'https://botinoui-production1-bot.sncfvoyages-prod.aws.vsct.fr/web');
+    MessageService messageService =
+        MessageService(authenticatorTOCK: authenticatorTOCK);
+    TOCKResponse responses = await messageService.sendHTTPMessage(query);
+    Bubble message = new Bubble(
+        text: responses.getMessage(),
+        name: "bot",
+        type: responses.getType(),
+        index: null);
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
+
+  void _handleSubmitted(String text) {
+    var bubble =
+        new Bubble(text: text, name: "user", type: "message", index: null);
+    setState(() {
+      _messages.insert(0, bubble);
+    });
+    Response(text);
   }
 }
