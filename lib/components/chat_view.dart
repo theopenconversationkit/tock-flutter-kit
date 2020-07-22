@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tock_flutter_kit/components/qr_button.dart';
 import 'package:tock_flutter_kit/components/text_field.dart';
 import 'package:tock_flutter_kit/services/messages_widget_mapper.dart';
-import 'package:tock_flutter_kit/tock_chat.dart';
 
 class ChatView extends StatelessWidget {
   final List<Message> messages;
+  final List<Button> buttons;
   final bool loading;
-  final Function(String) inputText;
+  final Function inputText;
+  final ScrollController _scrollController = ScrollController();
 
-  const ChatView(
+  ChatView(
       {Key key,
       @required this.messages,
       @required this.loading,
-      @required this.inputText})
+      @required this.inputText,
+      @required this.buttons})
       : super(key: key);
 
   @override
@@ -30,10 +31,16 @@ class ChatView extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
+                      controller: _scrollController,
                       shrinkWrap: true,
-                      itemBuilder: (_, index) =>
-                          MessagesWidgetMapper.mapMessage(
-                              messages.elementAt(index)),
+                      itemBuilder: (_, index) {
+                        _scrollController.animateTo(
+                            _scrollController.position.maxScrollExtent,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.easeOut);
+                        return MessagesWidgetMapper.mapMessage(
+                            messages.elementAt(index));
+                      },
                       itemCount: messages.length,
                       scrollDirection: Axis.vertical,
                       cacheExtent: 10,
@@ -46,12 +53,10 @@ class ChatView extends StatelessWidget {
                       padding: EdgeInsets.all(5),
                       itemBuilder: (_, index) => Padding(
                         padding: const EdgeInsets.only(right: 5.0),
-                        child: QrButton(
-                          text: 'Click me',
-                          onPressed: () {},
-                        ),
+                        child: ButtonsWidgetMapper.mapButton(
+                            buttons.elementAt(index), inputText),
                       ),
-                      itemCount: 4,
+                      itemCount: buttons.length,
                       scrollDirection: Axis.horizontal,
                     ),
                   ),

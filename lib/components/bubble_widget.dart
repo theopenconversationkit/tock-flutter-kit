@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:tock_flutter_kit/tock_chat.dart';
+import 'package:tock_flutter_kit/services/messages_widget_mapper.dart';
 
 class BubbleWidget extends StatelessWidget {
   final String text;
