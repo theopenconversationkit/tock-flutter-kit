@@ -3,6 +3,8 @@ import 'package:tock_flutter_kit/components/bubble_widget.dart';
 import 'package:tock_flutter_kit/components/postback_button.dart';
 import 'package:tock_flutter_kit/components/qr_button.dart';
 import 'package:tock_flutter_kit/components/url_button.dart';
+import 'package:tock_flutter_kit/components/card_widget.dart';
+import 'package:tock_flutter_kit/components/carousel_widget.dart';
 import 'package:tock_flutter_kit/tock_chat.dart';
 
 enum MessagesTypes { CARD, CAROUSEL, WIDGET, TEXT }
@@ -62,11 +64,11 @@ class MessagesWidgetMapper {
       [Function(Map<String, dynamic> messageData) customWidget]) {
     switch (message.type) {
       case MessagesTypes.CARD:
-        return Container();
+        return CardWidget();
       case MessagesTypes.CAROUSEL:
-        return Container();
+        return CarouselWidget();
       case MessagesTypes.TEXT:
-        return Bubble(
+        return BubbleWidget(
           text: message.data[MessagesTypes.TEXT.toText],
           name: message.name,
         );
