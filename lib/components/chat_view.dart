@@ -39,7 +39,7 @@ class ChatView extends StatelessWidget {
                             duration: Duration(milliseconds: 200),
                             curve: Curves.easeOut);
                         return MessagesWidgetMapper.mapMessage(
-                            messages.elementAt(index));
+                            messages.elementAt(index), inputText);
                       },
                       itemCount: messages.length,
                       scrollDirection: Axis.vertical,

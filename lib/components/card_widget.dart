@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tock_flutter_kit/components/qr_button.dart';
 
 class CardWidget extends StatelessWidget {
   final String title;
+  final String subtitle;
+  final List<Widget> buttons;
 
-  const CardWidget({Key key, @required this.title}) : super(key: key);
+  const CardWidget({Key key, @required this.title, this.subtitle, this.buttons})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +20,13 @@ class CardWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 title: Text(title),
-                subtitle: Text(""),
+                subtitle: Text(subtitle ?? ""),
               ),
-              ButtonBar(
-                children: <Widget>[
-                  QrButton(text: "button 01", onPressed: () {}),
-                ],
-              )
+              buttons != null
+                  ? ButtonBar(
+                      children: buttons,
+                    )
+                  : Container()
             ],
           )),
     );

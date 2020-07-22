@@ -74,13 +74,19 @@ class MessagesTypesUtil {
 
 // TODO handle buttons in body with global config
 class MessagesWidgetMapper {
-  static Widget mapMessage(Message message,
+  static Widget mapMessage(
+      Message message, Function(String text, String payload) callTock,
       [Function(Message message) customWidget]) {
     switch (message.type) {
       case MessagesTypes.CARD:
+        List<Widget> buttons = List();
+        message.data[MessagesTypes.CARD.toText]['buttons'].forEach((element) {
+          buttons.add(ButtonsWidgetMapper.mapButton(
+              Button(ButtonsUtil.fromString(element), element), callTock));
+        });
         return CardWidget(
-          title: message.data[MessagesTypes.CARD.toText]['title'],
-        );
+            title: message.data[MessagesTypes.CARD.toText]['title'],
+            buttons: buttons);
       case MessagesTypes.CAROUSEL:
         return CarouselWidget();
       case MessagesTypes.TEXT:

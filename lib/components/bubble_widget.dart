@@ -25,11 +25,9 @@ class BubbleWidget extends StatelessWidget {
         width: 20,
         child: Text(
           text,
-          style:
-              Theme.of(context).textTheme.headline4.copyWith(color: textColor),
+          style: TextStyle(color: textColor, fontSize: 20),
           textAlign: isUserMessage(name) ? TextAlign.right : TextAlign.left,
         ),
-        height: 60,
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
         margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
         decoration: isUserMessage(name)
