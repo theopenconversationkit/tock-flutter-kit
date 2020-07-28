@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tock_flutter_kit/components/card_widget.dart';
 
 class CarouselWidget extends StatelessWidget {
+  final List<Widget> cards;
   final double height;
 
-  const CarouselWidget({Key key, this.height}) : super(key: key);
+  const CarouselWidget({Key key, @required this.cards, @required this.height})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: this.height ?? 175,
+      height: this.height,
       child: ListView.builder(
-        itemBuilder: (_, index) => CardWidget(),
-        itemCount: 3,
+        itemBuilder: (_, index) => cards.elementAt(index),
+        itemCount: cards.length,
         scrollDirection: Axis.horizontal,
         cacheExtent: 10,
       ),
