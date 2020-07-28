@@ -4,8 +4,18 @@ class CardWidget extends StatelessWidget {
   final String title;
   final String subtitle;
   final List<Widget> buttons;
+  final String image;
+  final double height;
+  final double buttonsHeight;
 
-  const CardWidget({Key key, @required this.title, this.subtitle, this.buttons})
+  const CardWidget(
+      {Key key,
+      @required this.title,
+      this.subtitle,
+      this.buttons,
+      this.image,
+      this.height,
+      this.buttonsHeight})
       : super(key: key);
 
   @override
@@ -18,13 +28,28 @@ class CardWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              image != null
+                  ? Container(
+                      child: Image.network(image),
+                    )
+                  : Container(),
               ListTile(
                 title: Text(title),
                 subtitle: Text(subtitle ?? ""),
               ),
               buttons != null
-                  ? ButtonBar(
-                      children: buttons,
+                  ? Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: buttonsHeight,
+                      child: ListView.builder(
+                        padding: EdgeInsets.all(5),
+                        itemBuilder: (_, index) => Padding(
+                          padding: const EdgeInsets.only(right: 5.0),
+                          child: buttons.elementAt(index),
+                        ),
+                        itemCount: buttons.length,
+                        scrollDirection: Axis.vertical,
+                      ),
                     )
                   : Container()
             ],

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tock_flutter_kit/components/bubble_widget.dart';
 import 'package:tock_flutter_kit/components/card_widget.dart';
@@ -79,16 +82,11 @@ class MessagesWidgetMapper {
       [Function(Message message) customWidget]) {
     switch (message.type) {
       case MessagesTypes.CARD:
-        List<Widget> buttons = List();
-        message.data[MessagesTypes.CARD.toText]['buttons'].forEach((element) {
-          buttons.add(ButtonsWidgetMapper.mapButton(
-              Button(ButtonsUtil.fromString(element), element), callTock));
-        });
-        return CardWidget(
-            title: message.data[MessagesTypes.CARD.toText]['title'],
-            buttons: buttons);
+        return CardWidgetMapper.mapCard(
+            message.data[MessagesTypes.CARD.toText], callTock);
       case MessagesTypes.CAROUSEL:
-        return CarouselWidget();
+        return CarouselWidgetMapper.mapCarousel(
+            message.data[MessagesTypes.CAROUSEL.toText], callTock);
       case MessagesTypes.TEXT:
         return BubbleWidget(
           text: message.data[MessagesTypes.TEXT.toText],
@@ -102,6 +100,55 @@ class MessagesWidgetMapper {
       default:
         return null;
     }
+  }
+}
+
+class CardWidgetMapper {
+  static CardWidget mapCard(Map<String, dynamic> cardMessage,
+      Function(String text, String payload) callTock) {
+    List<Widget> buttons = List();
+    var height = 130;
+
+    var buttonHeight = 0;
+    cardMessage['buttons'].forEach((element) {
+      buttons.add(ButtonsWidgetMapper.mapButton(
+          Button(ButtonsUtil.fromString(element), element), callTock));
+      buttonHeight = buttonHeight + 50;
+      height = height + 50;
+    });
+    if (cardMessage['file'] != null) {
+      height = height + 150;
+    }
+    return CardWidget(
+        title: cardMessage['title'],
+        subtitle: cardMessage['subTitle'],
+        buttons: buttons,
+        image:
+            (cardMessage['file'] != null) ? cardMessage['file']['url'] : null,
+        height: height.toDouble(),
+        buttonsHeight: buttonHeight.toDouble());
+  }
+}
+
+class CarouselWidgetMapper {
+  static Widget mapCarousel(Map<String, dynamic> cardsMessage,
+      Function(String text, String payload) callTock) {
+    List<Widget> cards = List();
+    var cardsHeight = List();
+
+    cardsMessage.forEach((k, cardList) {
+      if (cardList != null) {
+        cardList.forEach((element) {
+          var mapCard = CardWidgetMapper.mapCard(element, callTock);
+          cardsHeight.add(mapCard.height);
+          cards.add(mapCard);
+        });
+      }
+    });
+    cardsHeight.sort();
+
+    return CarouselWidget(
+        height: cardsHeight.isNotEmpty ? cardsHeight.last : 130, cards: cards);
   }
 }
 
@@ -128,7 +175,7 @@ class ButtonsWidgetMapper {
       case ButtonsTypes.URL_BUTTON:
         return UrlButton(
           text: button.data[MessagesTypes.TEXT.toText],
-          url: button.data[ButtonsTypes.URL_BUTTON.toText],
+          url: button.data['url'],
         );
       case ButtonsTypes.WIDGET:
         return customButton(button);
@@ -149,5 +196,6 @@ class Message {
 class Button {
   ButtonsTypes type;
   Map<String, dynamic> data;
+
   Button(this.type, this.data);
 }
